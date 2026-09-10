@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shortener
+  namespace: shortener
+  labels:
+    app: shortener
+spec:
+  # Stays <pending> on kind (no cloud controller) but the ClusterIP still works,
+  # so port-forward is fine locally. Real external IP appears on AKS.
+  type: LoadBalancer
+  selector:
+    app: shortener
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000

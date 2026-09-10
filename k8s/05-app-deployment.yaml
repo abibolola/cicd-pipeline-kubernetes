@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shortener
+  namespace: shortener
+  labels:
+    app: shortener
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0        # never drop below 2 healthy pods during a rollout
+  selector:
+    matchLabels:
+      app: shortener
+  template:
+    metadata:
+      labels:
+        app: shortener
+    spec:
+      # Spread replicas across nodes so one node failing does not take out the app.
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: shortener
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001       # matches the UID created in the Dockerfile
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: api
+          # Replaced at deploy time with the commit-SHA tag. Never :latest.
+          image: IMAGE_PLACEHOLDER
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: shortener-config
+            - secretRef:
+                name: shortener-secrets
+          # Liveness deliberately hits /healthz, which never touches Redis.
+          # If it checked Redis, a Redis blip would crash-loop healthy API pods.
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            failureThreshold: 3
+          # Readiness hits /readyz, which does check Redis. Pods leave the
+          # Service endpoints during an outage and rejoin on recovery.
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            failureThreshold: 2
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 3
+            failureThreshold: 20    # up to 60s to boot before liveness takes over
+          resources:
+            requests:
+              cpu: 50m
+              memory: 96Mi
+            limits:
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        # readOnlyRootFilesystem needs a writable /tmp for anything that spools.
+        - name: tmp
+          emptyDir: {}

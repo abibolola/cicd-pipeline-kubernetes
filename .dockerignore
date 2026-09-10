@@ -1,0 +1,13 @@
+.git
+.gitignore
+tests/
+k8s/
+scripts/
+Jenkinsfile
+README.md
+docker-compose.yml
+**/__pycache__
+*.pyc
+.venv
+.pytest_cache
+.ruff_cache

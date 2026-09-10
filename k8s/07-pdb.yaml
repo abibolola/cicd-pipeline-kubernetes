@@ -1,0 +1,12 @@
+# Keeps at least one pod serving during voluntary disruptions
+# (node drains, cluster upgrades).
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: shortener
+  namespace: shortener
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: shortener

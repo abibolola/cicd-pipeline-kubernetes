@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shortener-config
+  namespace: shortener
+data:
+  # Values must be strings. Unquoted 6379 is a YAML int and will be rejected.
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+  # Overwritten on AKS once the LoadBalancer IP is known.
+  BASE_URL: "http://localhost:8000"

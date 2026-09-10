@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+.env
+kubeconfig
+docs/friction-log.md
+docs/evidence/session*
+docs/CAPTURE-CHECKLIST.md
+docs/evidence/log*
+*:Zone.Identifier
