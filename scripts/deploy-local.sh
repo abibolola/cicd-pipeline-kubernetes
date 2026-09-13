@@ -21,7 +21,7 @@ kubectl create secret generic shortener-secrets \
   --dry-run=client -o yaml | kubectl apply -f -
 
 echo "==> Applying manifests"
-for f in k8s/0[134567]-*.yaml; do   #02 and 05 are deliberately skipped
+for f in k8s/0[13467]-*.yaml; do   #02 and 05 are deliberately skipped
   kubectl apply -f "$f"
 done
 
