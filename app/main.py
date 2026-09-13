@@ -37,7 +37,7 @@ class ShortenResponse(BaseModel):
 
 @app.get("/healthz")
 def healthz() -> dict:
-    return {"status": "ok, let's do this", "version": APP_VERSION}
+    return {"status": "ok", "version": APP_VERSION}
 
 
 @app.get("/readyz")
