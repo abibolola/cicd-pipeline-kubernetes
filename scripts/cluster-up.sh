@@ -7,7 +7,7 @@ RG="${RG:-rg-shortener}"
 CLUSTER="${CLUSTER:-aks-shortener}"
 LOCATION="${LOCATION:-australiaeast}"
 NODE_COUNT="${NODE_COUNT:-2}"
-NODE_SIZE="${NODE_SIZE:-Standard_B2s}"
+NODE_SIZE="${NODE_SIZE:-Standard_B2s_v2}"
 
 echo "==> Creating AKS cluster '${CLUSTER}' in '${RG}'"
 az aks create \

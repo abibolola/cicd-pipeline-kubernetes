@@ -10,7 +10,7 @@ pipeline {
 
     environment {
         // ---- EDIT THIS ONE ----
-        DOCKERHUB_USER = 'YOUR_DOCKERHUB_USERNAME'
+        DOCKERHUB_USER = 'abibolola'
 
         IMAGE_REPO   = "${DOCKERHUB_USER}/shortener"
         RG           = 'rg-shortener'
