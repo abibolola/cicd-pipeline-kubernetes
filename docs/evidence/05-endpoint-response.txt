@@ -1,0 +1,26 @@
+HTTP/1.1 200 OK
+date: Wed, 16 Sep 2026 07:01:09 GMT
+server: uvicorn
+content-length: 35
+content-type: application/json
+
+{"status":"ok","version":"6bfd4d0"}
+
+HTTP/1.1 201 Created
+date: Wed, 16 Sep 2026 07:02:52 GMT
+server: uvicorn
+content-length: 49
+content-type: application/json
+
+{"code":"2","short_url":"http://20.227.13.177/2"}HTTP/1.1 201 Created
+date: Wed, 16 Sep 2026 07:04:22 GMT
+server: uvicorn
+content-length: 49
+content-type: application/json
+
+{"code":"3","short_url":"http://20.227.13.177/3"}HTTP/1.1 307 Temporary Redirect
+date: Wed, 16 Sep 2026 07:05:34 GMT
+server: uvicorn
+content-length: 0
+location: https://kubernetes.io/docs
+
