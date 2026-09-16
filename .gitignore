@@ -10,3 +10,4 @@ docs/evidence/session*
 docs/CAPTURE-CHECKLIST.md
 docs/evidence/log*
 *:Zone.Identifier
+jenkins_azurecli_creds.txt
