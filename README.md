@@ -1,7 +1,7 @@
 # CI/CD Pipeline to Kubernetes
 
 A containerised Python API built, tested, scanned and deployed to a managed
-Kubernetes cluster by a Jenkins declarative pipeline — reproducible from an
+Kubernetes cluster by a Jenkins declarative pipeline; reproducible from an
 empty cloud account, and destroyed at the end of every session.
 
 **Image:** [`abibolola/shortener`](https://hub.docker.com/r/abibolola/shortener) ·
@@ -51,7 +51,7 @@ flowchart LR
 ```
 
 **Two lifecycles, deliberately separated.** Jenkins is persistent
-infrastructure — stopped between sessions, not destroyed, so build history and
+infrastructure; stopped between sessions, not destroyed, so build history and
 credentials survive. The cluster is disposable and recreated from a script each
 session. This mirrors how a real CI controller and application environments are
 managed, and it is the reason the pipeline authenticates with a service
@@ -71,7 +71,7 @@ principal rather than a stored kubeconfig.
 | Registry | Docker Hub, public | Tagged by commit SHA, never `latest` |
 | Cloud cluster | AKS, 2× Standard_B2s_v2, `australiaeast` | Free control plane; node pool billed by the hour |
 | Scanning | Trivy (HIGH/CRITICAL) | Runs before push |
-| Provisioning | `az` CLI in `scripts/` | Terraform is deliberately deferred — see *Future improvements* |
+| Provisioning | `az` CLI in `scripts/` | Terraform is deliberately deferred: see *Future improvements* |
 
 ---
 
@@ -106,13 +106,13 @@ work, because the previous ReplicaSet still references a real, distinct image.
 **Liveness and readiness probe different endpoints.** `/healthz` never touches
 Redis; `/readyz` does. If liveness checked the datastore, a Redis blip would
 crash-loop perfectly healthy API pods and turn a dependency outage into an
-application outage. Readiness is the probe that *should* fail — it removes pods
+application outage. Readiness is the probe that *should* fail; it removes pods
 from the Service endpoints and lets them back in on recovery, with no restarts.
 Verified: see `07-readiness-redis-down.png`, restarts stay at 0 throughout.
 
 **`maxUnavailable: 0` on the rolling update.** Kubernetes adds a healthy pod
 before removing an old one, so capacity never drops during a deploy. This was
-proven accidentally — see *Key learnings*.
+proven accidentally: see *Key learnings*.
 
 **No cluster credential is stored.** The pipeline runs `az aks get-credentials`
 into a per-build kubeconfig in the workspace, deleted in `post`. The service
@@ -182,7 +182,7 @@ record.
 | File | Shows |
 |---|---|
 | `01-pipeline-green.png` | Full pipeline green, 9 stages, 2m42s |
-| `02-pipeline-failed.png` | A broken test halting the build at Lint & Test — image never built, cluster never touched |
+| `02-pipeline-failed.png` | A broken test halting the build at Lint & Test: image never built, cluster never touched |
 | `03-failed-test-console.png` | The assertion failure that caused it |
 | `04-registry-tags.png` | Docker Hub tags: commit SHAs, no `latest` |
 | `05-pods-running.png` | Pods across both nodes, LoadBalancer IP `20.227.13.177`, image `abibolola/shortener:6bfd4d0` |
@@ -241,8 +241,8 @@ tool, not a load balancer, and mistaking one for the other during a real
 incident would send you down the wrong path.
 
 **Where a secret actually lives is a design decision, not an afterthought.**
-Tracing the Redis password end to end — Jenkins credential store → pipeline env
-var → `kubectl create secret` → pod environment — clarified that the Kubernetes
+Tracing the Redis password end to end: Jenkins credential store → pipeline env
+var → `kubectl create secret` → pod environment; clarified that the Kubernetes
 Secret is derived state, recreated every deploy, and that losing the cluster
 loses nothing.
 
@@ -297,3 +297,4 @@ The AKS **control plane is free**, and the standard load balancer stayed inside
 its free allowance (0.4 GB processed against 15 GB, 3.11 of 750 rule-hours), so
 the entire bill was compute and disk for the roughly one hour the cluster
 existed.
+
