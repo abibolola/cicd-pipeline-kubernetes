@@ -176,7 +176,7 @@ Jenkins credentials required: `dockerhub`, `azure-sp`, `azure-tenant`,
 
 ## Evidence
 
-Infrastructure was destroyed after the run, so the screenshots below in docs/evidence are the
+Infrastructure was destroyed after the run, so the screenshots below in ```docs/evidence``` are the
 record.
 
 | File | Shows |
