@@ -6,6 +6,7 @@ __pycache__/
 .env
 kubeconfig
 docs/friction-log.md
+docs/general_screenshot
 docs/evidence/session*
 docs/CAPTURE-CHECKLIST.md
 docs/evidence/log*
